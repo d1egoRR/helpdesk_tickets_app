@@ -21,7 +21,8 @@ RUN groupadd --system appgroup \
 COPY --chown=appuser:appgroup pyproject.toml ./
 COPY --chown=appuser:appgroup src ./src
 COPY --chown=appuser:appgroup tests ./tests
-RUN chown appuser:appgroup /app
+RUN mkdir -p /app/chroma_db \
+    && chown appuser:appgroup /app /app/chroma_db
 
 USER appuser
 

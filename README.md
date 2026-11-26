@@ -7,7 +7,8 @@ Helpdesk ticket management API built with Python, FastAPI, LangChain, and LangGr
 - **Python**: 3.12+
 - **API Framework**: FastAPI + Uvicorn
 - **Configuration**: Pydantic Settings
-- **AI Orchestration**: LangChain, LangChain Core, LangChain OpenAI, LangGraph
+- **AI Orchestration**: LangChain, LangChain Core, LangChain OpenAI, LangChain Chroma, LangGraph
+- **Vector Store**: ChromaDB
 - **Testing & Quality**: pytest, httpx, Ruff
 - **Containerization**: Docker & Docker Compose (development setup)
 
@@ -26,14 +27,17 @@ Helpdesk ticket management API built with Python, FastAPI, LangChain, and LangGr
 │       ├── config.py
 │       ├── main.py
 │       └── adapters/
-│           └── inbound/
-│               └── http/
-│                   └── health.py
+│           ├── inbound/
+│           │   └── http/
+│           │       └── health.py
+│           └── outbound/
+│               └── vectorstore/
+│                   └── chroma_setup.py
 └── tests/
     └── test_health.py
 ```
 
-Additional architectural layers (`domain`, `application`, and `adapters/outbound`) will be added incrementally as ticket, chat, and AI agent use cases are implemented.
+Additional architectural layers (`domain`, `application`) will be added incrementally as ticket, chat, and AI agent use cases are implemented.
 
 ## Configuration
 
@@ -60,6 +64,20 @@ docker compose up
 ```
 
 Interactive OpenAPI documentation is available at `http://localhost:8000/docs`, and the health endpoint is at `GET /health`.
+
+## Vector Store Setup (ChromaDB)
+
+Index the Markdown knowledge base in `docs/` into ChromaDB (one-time setup):
+
+```bash
+docker compose run --rm api python -m helpdesk.adapters.outbound.vectorstore.chroma_setup
+```
+
+Force rebuilding the persisted ChromaDB database from scratch:
+
+```bash
+docker compose run --rm api python -m helpdesk.adapters.outbound.vectorstore.chroma_setup --force
+```
 
 ## Testing & Linting
 
