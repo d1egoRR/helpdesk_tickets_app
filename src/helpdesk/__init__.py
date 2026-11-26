@@ -1,0 +1,1 @@
+"""Helpdesk tickets application package."""
