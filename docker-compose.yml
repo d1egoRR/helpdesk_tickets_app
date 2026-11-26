@@ -10,4 +10,9 @@ services:
       - ./src:/app/src
       - ./tests:/app/tests
       - ./pyproject.toml:/app/pyproject.toml
+      - ./docs:/app/docs:ro
+      - chroma_db:/app/chroma_db
     restart: unless-stopped
+
+volumes:
+  chroma_db:
